@@ -3,43 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>訪談時間選擇 — 結帳流程改版 UX 研究</title>
+<title>結帳流程改版 UX 研究 — 訪談時間選擇</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f7f5;color:#111;min-height:100vh}
 .page{max-width:540px;margin:0 auto;padding:24px 16px 48px}
-
 .card{background:#fff;border:0.5px solid #e0e0da;border-radius:12px;overflow:hidden;margin-bottom:16px}
 .card-header{padding:20px 20px 14px;border-bottom:0.5px solid #eee}
-.card-header h1{font-size:16px;font-weight:500;margin-bottom:3px}
-.card-header .sub{font-size:12px;color:#888;margin-bottom:10px}
-.meta{display:flex;flex-wrap:wrap;gap:10px}
-.meta-item{font-size:12px;color:#666;display:flex;align-items:center;gap:4px}
-.meta-item svg{width:14px;height:14px;flex-shrink:0}
-
+.card-header h1{font-size:16px;font-weight:500;margin-bottom:3px;color:#111}
+.sub{font-size:12px;color:#888;margin-bottom:10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta-item{font-size:12px;color:#666}
 .name-section{padding:16px 20px;border-bottom:0.5px solid #eee}
 .name-section label{font-size:12px;color:#666;display:block;margin-bottom:6px}
 .name-input{width:100%;padding:8px 12px;border:0.5px solid #d0d0ca;border-radius:8px;font-size:14px;color:#111;background:#fff;outline:none}
 .name-input:focus{border-color:#534AB7;box-shadow:0 0 0 2px #EEEDFE}
 .name-input::placeholder{color:#aaa}
-
 .slots-section{padding:16px 20px}
 .intro{font-size:13px;color:#666;margin-bottom:16px;line-height:1.6}
 .day-group{margin-bottom:16px}
 .day-label{font-size:11px;font-weight:500;color:#aaa;letter-spacing:.05em;margin-bottom:7px;text-transform:uppercase}
 .slots{display:flex;flex-wrap:wrap;gap:7px}
-.slot{padding:8px 16px;border:0.5px solid #d8d8d4;border-radius:8px;font-size:13px;cursor:pointer;user-select:none;transition:all .12s;background:#fff}
+.slot{padding:8px 16px;border:0.5px solid #d8d8d4;border-radius:8px;font-size:13px;cursor:pointer;user-select:none;transition:all .12s;background:#fff;color:#111}
 .slot:hover{border-color:#7C6EF0;background:#F0EFFE}
 .slot.selected{border:1.5px solid #534AB7;background:#EEEDFE;color:#26215C;font-weight:500}
+.slot.locked{pointer-events:none;opacity:.55}
 .counter{font-size:12px;color:#888;margin-top:12px}
 .counter b{color:#111}
-
 .submit-section{padding:0 20px 16px}
-.btn-submit{width:100%;padding:10px;font-size:14px;font-weight:500;border:none;border-radius:8px;cursor:pointer;background:#534AB7;color:#fff;transition:opacity .12s}
-.btn-submit:disabled{opacity:.35;cursor:not-allowed;background:#ccc}
+.btn-submit{width:100%;padding:10px;font-size:14px;font-weight:500;border:none;border-radius:8px;cursor:pointer;background:#534AB7;color:#fff;transition:opacity .12s;margin-top:4px}
+.btn-submit:disabled{opacity:.35;cursor:not-allowed}
 .btn-submit:not(:disabled):hover{opacity:.85}
-
-.results-card{background:#fff;border:0.5px solid #e0e0da;border-radius:12px;overflow:hidden;margin-bottom:16px}
+.msg{padding:12px 14px;border-radius:8px;font-size:13px;margin-bottom:10px;display:none;line-height:1.6}
+.msg.show{display:block}
+.msg.ok{background:#f0faf5;color:#0F6E56;border:0.5px solid #5DCAA5}
+.msg.err{background:#fff1f1;color:#A32D2D;border:0.5px solid #F09595}
+.reset-btn{background:none;border:none;font-size:11px;color:#888;cursor:pointer;text-decoration:underline;padding:0;margin-top:4px;display:block}
+.results-card{background:#fff;border:0.5px solid #e0e0da;border-radius:12px;overflow:hidden}
 .results-header{padding:16px 20px;border-bottom:0.5px solid #eee;display:flex;align-items:center;justify-content:space-between}
 .results-header h2{font-size:14px;font-weight:500}
 .resp-badge{font-size:11px;background:#EEEDFE;color:#26215C;padding:3px 10px;border-radius:20px}
@@ -47,29 +47,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .result-day{margin-bottom:14px}
 .result-day-label{font-size:11px;font-weight:500;color:#aaa;letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
 .result-slot{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;margin-bottom:5px;border:0.5px solid transparent}
-.result-slot.votes-0{background:#f7f7f5;border-color:#eee}
-.result-slot.votes-1{background:#F5F3FF;border-color:#AFA9EC}
-.result-slot.votes-2{background:#E8E6FD;border-color:#7F77DD}
-.result-slot.votes-3{background:#EEEDFE;border-color:#534AB7}
+.v0{background:#f7f7f5;border-color:#eee}
+.v1{background:#F5F3FF;border-color:#AFA9EC}
+.v2{background:#E8E6FD;border-color:#7F77DD}
+.v3{background:#EEEDFE;border-color:#534AB7}
+.v4{background:#EEEDFE;border-color:#534AB7}
+.v5{background:#EEEDFE;border-color:#534AB7}
 .slot-time{font-size:13px;color:#333}
-.slot-voters{display:flex;gap:5px;align-items:center}
-.voter-chip{font-size:11px;padding:2px 8px;border-radius:20px;background:#534AB7;color:#fff}
-.voter-chip.empty{background:#e8e8e4;color:#888}
-.votes-count{font-size:12px;font-weight:500;color:#534AB7;min-width:28px;text-align:right}
-.votes-count.full{color:#3C3489;font-weight:600}
-
-.best-slot{padding:12px 20px;background:#EEEDFE;border-top:0.5px solid #AFA9EC;display:none}
-.best-slot.show{display:block}
-.best-slot p{font-size:13px;color:#26215C}
-.best-slot strong{font-weight:500}
-
-.already-submitted{padding:14px 20px;background:#f0faf5;border-radius:8px;font-size:13px;color:#0F6E56;margin:0 20px 16px;border:0.5px solid #5DCAA5;display:none}
-.already-submitted.show{display:block}
-
-.reset-btn{background:none;border:none;font-size:11px;color:#aaa;cursor:pointer;padding:0;text-decoration:underline;margin-top:4px}
-.reset-btn:hover{color:#666}
-
-.loading{text-align:center;padding:20px;color:#aaa;font-size:13px}
+.voter-chips{display:flex;gap:4px}
+.chip{font-size:11px;padding:2px 8px;border-radius:20px;background:#534AB7;color:#fff}
+.chip.empty{background:#e8e8e4;color:#888}
+.vcount{font-size:12px;font-weight:500;color:#534AB7;min-width:36px;text-align:right}
+.vcount.full{color:#3C3489;font-weight:600}
+.best{padding:12px 20px;background:#EEEDFE;border-top:0.5px solid #AFA9EC;font-size:13px;color:#26215C;display:none;line-height:1.7}
+.best.show{display:block}
 </style>
 </head>
 <body>
@@ -80,18 +71,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <h1>結帳流程改版 UX 研究</h1>
     <div class="sub">User Research Interview — Checkout Flow Redesign</div>
     <div class="meta">
-      <div class="meta-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        60 分鐘 / 60 min
-      </div>
-      <div class="meta-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        Google Meet 線上訪談
-      </div>
-      <div class="meta-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Angela Tsai &amp; Ammy Yao
-      </div>
+      <div class="meta-item">⏱ 60 分鐘 / 60 min</div>
+      <div class="meta-item">·</div>
+      <div class="meta-item">🎥 Google Meet 線上訪談</div>
+      <div class="meta-item">·</div>
+      <div class="meta-item">👥 Angela Tsai &amp; Ammy Yao</div>
     </div>
   </div>
 
@@ -101,33 +85,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 
   <div class="slots-section">
-    <p class="intro">請選擇 1–3 個方便的時段。<br>Please select 1–3 preferred time slots.</p>
+    <p class="intro">請選擇 1–3 個方便的時段，我們將盡快確認最終時間。<br>Please select 1–3 preferred time slots. We'll confirm shortly.</p>
 
     <div class="day-group">
       <div class="day-label">週四 Thu · 5/28</div>
       <div class="slots">
-        <div class="slot" data-id="528a">12:00–13:00</div>
-        <div class="slot" data-id="528b">13:00–14:00</div>
+        <div class="slot" data-id="s0">12:00–13:00</div>
+        <div class="slot" data-id="s1">13:00–14:00</div>
       </div>
     </div>
     <div class="day-group">
       <div class="day-label">週五 Fri · 5/29</div>
       <div class="slots">
-        <div class="slot" data-id="529a">13:00–14:00</div>
+        <div class="slot" data-id="s2">13:00–14:00</div>
       </div>
     </div>
     <div class="day-group">
       <div class="day-label">週一 Mon · 6/1</div>
       <div class="slots">
-        <div class="slot" data-id="601a">11:30–12:30</div>
-        <div class="slot" data-id="601b">13:00–14:00</div>
+        <div class="slot" data-id="s3">13:00–14:00</div>
       </div>
     </div>
     <div class="day-group">
       <div class="day-label">週二 Tue · 6/2</div>
       <div class="slots">
-        <div class="slot" data-id="602a">13:00–14:00</div>
-        <div class="slot" data-id="602b">15:30–16:30</div>
+        <div class="slot" data-id="s4">13:00–14:00</div>
       </div>
     </div>
 
@@ -135,199 +117,183 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 
   <div class="submit-section">
-    <div class="already-submitted" id="alreadyMsg">
-      ✓ 您已完成填寫。感謝！<br>
-      <button class="reset-btn" onclick="resetMyResponse()">重新填寫</button>
+    <div class="msg ok" id="okMsg">
+      ✓ 已送出！感謝您的回覆。<br>
+      <button class="reset-btn" onclick="resetMe()">重新填寫 / Edit response</button>
     </div>
-    <button class="btn-submit" id="submitBtn" disabled onclick="submitResponse()">確認送出 / Submit</button>
+    <div class="msg err" id="errMsg">⚠ 送出失敗，請稍後再試。Please try again.</div>
+    <button class="btn-submit" id="submitBtn" disabled onclick="submitR()">確認送出 / Submit</button>
   </div>
 </div>
 
-<div class="results-card" id="resultsCard">
+<div class="results-card">
   <div class="results-header">
     <h2>回覆彙整 / Responses</h2>
     <span class="resp-badge" id="respBadge">0 / 3 已回覆</span>
   </div>
   <div class="results-body" id="resultsBody">
-    <div class="loading">載入中...</div>
+    <p style="font-size:12px;color:#ccc;padding:4px 0">載入中... Loading</p>
   </div>
-  <div class="best-slot" id="bestSlot"></div>
+  <div class="best" id="bestSlot"></div>
 </div>
 
 </div>
-
 <script>
+const BIN_ID  = '6a18064eddf5aa59f76f33ca';
+const API_KEY = '$2a$10$B5s6Lv0Jcji6D7YU2fyKIuzbtVf3hnfzEueifBhT0iz/8Mbg8kqeS';
+const MAX = 3;
+const BASE = 'https://api.jsonbin.io/v3/b/';
+
 const SLOTS = [
-  {id:'528a', label:'5/28（週四）12:00–13:00'},
-  {id:'528b', label:'5/28（週四）13:00–14:00'},
-  {id:'529a', label:'5/29（週五）13:00–14:00'},
-  {id:'601a', label:'6/1（週一）11:30–12:30'},
-  {id:'601b', label:'6/1（週一）13:00–14:00'},
-  {id:'602a', label:'6/2（週二）13:00–14:00'},
-  {id:'602b', label:'6/2（週二）15:30–16:30'},
+  {id:'s0', label:'5/28（週四）12:00–13:00'},
+  {id:'s1', label:'5/28（週四）13:00–14:00'},
+  {id:'s2', label:'5/29（週五）13:00–14:00'},
+  {id:'s3', label:'6/1（週一）13:00–14:00'},
+  {id:'s4', label:'6/2（週二）13:00–14:00'},
 ];
 const DAYS = [
-  {label:'週四 Thu · 5/28', ids:['528a','528b']},
-  {label:'週五 Fri · 5/29', ids:['529a']},
-  {label:'週一 Mon · 6/1', ids:['601a','601b']},
-  {label:'週二 Tue · 6/2', ids:['602a','602b']},
+  {label:'週四 Thu · 5/28', ids:['s0','s1']},
+  {label:'週五 Fri · 5/29', ids:['s2']},
+  {label:'週一 Mon · 6/1',  ids:['s3']},
+  {label:'週二 Tue · 6/2',  ids:['s4']},
 ];
-const MAX_RESPONDENTS = 3;
-const STORAGE_KEY = 'interview_responses_v2';
 
-let selected = [];
-let myName = '';
-let responses = {};
+let selected=[], responses={};
 
-function getSlotLabel(id){ return SLOTS.find(s=>s.id===id)?.label||id; }
-
-async function loadResponses(){
-  try {
-    const r = await window.storage.get(STORAGE_KEY, true);
-    responses = r ? JSON.parse(r.value) : {};
-  } catch(e){ responses = {}; }
-  renderResults();
-  checkIfAlreadySubmitted();
+async function load(){
+  try{
+    const r=await fetch(BASE+BIN_ID+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const j=await r.json();
+    responses=j.record||{};
+  }catch(e){}
+  render();
+  checkExisting();
 }
 
-async function saveResponses(){
-  try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(responses), true);
-  } catch(e){ console.error(e); }
+function checkExisting(){
+  const n=document.getElementById('nameInput').value.trim();
+  if(!n||!responses[n]) return;
+  selected=[...responses[n]];
+  document.querySelectorAll('.slot').forEach(el=>{
+    if(selected.includes(el.dataset.id)) el.classList.add('selected');
+  });
+  updateCnt();
+  showOk();
 }
 
-function checkIfAlreadySubmitted(){
-  const name = document.getElementById('nameInput').value.trim();
-  if(!name) return;
-  if(responses[name]){
-    document.getElementById('alreadyMsg').classList.add('show');
-    document.getElementById('submitBtn').style.display='none';
-    const saved = responses[name];
-    document.querySelectorAll('.slot').forEach(el=>{
-      if(saved.includes(el.dataset.id)) el.classList.add('selected');
-    });
-    selected = saved;
-    updateCounter();
-  } else {
-    document.getElementById('alreadyMsg').classList.remove('show');
-    document.getElementById('submitBtn').style.display='';
-    updateSubmitBtn();
-  }
-}
-
-document.getElementById('nameInput').addEventListener('input', function(){
-  myName = this.value.trim();
-  document.querySelectorAll('.slot').forEach(el=>el.classList.remove('selected'));
-  selected = [];
-  updateCounter();
-  checkIfAlreadySubmitted();
+document.getElementById('nameInput').addEventListener('input',function(){
+  document.querySelectorAll('.slot').forEach(el=>el.classList.remove('selected','locked'));
+  selected=[];
+  updateCnt();
+  document.getElementById('okMsg').classList.remove('show');
+  document.getElementById('errMsg').classList.remove('show');
+  document.getElementById('submitBtn').style.display='';
+  updateBtn();
+  checkExisting();
 });
 
 document.querySelectorAll('.slot').forEach(el=>{
-  el.addEventListener('click', function(){
-    const id = this.dataset.id;
+  el.addEventListener('click',function(){
+    const id=this.dataset.id;
     if(this.classList.contains('selected')){
       this.classList.remove('selected');
-      selected = selected.filter(s=>s!==id);
+      selected=selected.filter(s=>s!==id);
     } else {
       if(selected.length>=3) return;
       this.classList.add('selected');
       selected.push(id);
     }
-    updateCounter();
-    updateSubmitBtn();
+    updateCnt();
+    updateBtn();
   });
 });
 
-function updateCounter(){
-  document.getElementById('cnt').textContent = selected.length;
+function updateCnt(){ document.getElementById('cnt').textContent=selected.length; }
+function updateBtn(){
+  const n=document.getElementById('nameInput').value.trim();
+  document.getElementById('submitBtn').disabled=selected.length===0||!n;
 }
-function updateSubmitBtn(){
-  const name = document.getElementById('nameInput').value.trim();
-  document.getElementById('submitBtn').disabled = selected.length===0 || !name;
-}
-
-async function submitResponse(){
-  const name = document.getElementById('nameInput').value.trim();
-  if(!name || selected.length===0) return;
-  responses[name] = [...selected];
-  await saveResponses();
-  document.getElementById('alreadyMsg').classList.add('show');
+function showOk(){
+  document.getElementById('okMsg').classList.add('show');
   document.getElementById('submitBtn').style.display='none';
-  renderResults();
+  document.querySelectorAll('.slot').forEach(el=>el.classList.add('locked'));
 }
 
-function resetMyResponse(){
-  const name = document.getElementById('nameInput').value.trim();
-  if(!name) return;
-  delete responses[name];
-  saveResponses();
-  document.getElementById('alreadyMsg').classList.remove('show');
-  document.getElementById('submitBtn').style.display='';
-  document.querySelectorAll('.slot').forEach(el=>el.classList.remove('selected'));
+async function submitR(){
+  const n=document.getElementById('nameInput').value.trim();
+  if(!n||!selected.length) return;
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('submitBtn').textContent='送出中...';
+  try{
+    const upd={...responses,[n]:[...selected]};
+    const r=await fetch(BASE+BIN_ID,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(upd)});
+    if(!r.ok) throw new Error();
+    responses=upd;
+    showOk();
+    render();
+  }catch(e){
+    document.getElementById('errMsg').classList.add('show');
+    document.getElementById('submitBtn').disabled=false;
+    document.getElementById('submitBtn').textContent='確認送出 / Submit';
+  }
+}
+
+async function resetMe(){
+  const n=document.getElementById('nameInput').value.trim();
+  if(!n) return;
+  delete responses[n];
+  try{await fetch(BASE+BIN_ID,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(responses)});}catch(e){}
+  document.querySelectorAll('.slot').forEach(el=>el.classList.remove('selected','locked'));
   selected=[];
-  updateCounter();
-  updateSubmitBtn();
-  renderResults();
+  updateCnt();
+  document.getElementById('okMsg').classList.remove('show');
+  document.getElementById('submitBtn').style.display='';
+  updateBtn();
+  render();
 }
 
-function renderResults(){
-  const names = Object.keys(responses);
-  const count = names.length;
-  document.getElementById('respBadge').textContent = count+' / '+MAX_RESPONDENTS+' 已回覆';
-
-  const body = document.getElementById('resultsBody');
-  if(count===0){
-    body.innerHTML='<div class="loading" style="color:#bbb;padding:14px 0">尚無回覆 · No responses yet</div>';
+function render(){
+  const names=Object.keys(responses);
+  document.getElementById('respBadge').textContent=names.length+' / '+MAX+' 已回覆';
+  const body=document.getElementById('resultsBody');
+  if(!names.length){
+    body.innerHTML='<p style="font-size:12px;color:#ccc;padding:4px 0">尚無回覆 · No responses yet</p>';
     document.getElementById('bestSlot').classList.remove('show');
     return;
   }
-
-  const votesMap = {};
-  SLOTS.forEach(s=>{ votesMap[s.id]=[]; });
-  names.forEach(name=>{
-    (responses[name]||[]).forEach(id=>{ if(votesMap[id]) votesMap[id].push(name); });
-  });
-
+  const votes={};
+  SLOTS.forEach(s=>{votes[s.id]=[];});
+  names.forEach(n=>{(responses[n]||[]).forEach(id=>{if(votes[id]) votes[id].push(n);});});
   let html='';
   DAYS.forEach(day=>{
-    html+=`<div class="result-day"><div class="result-day-label">${day.label}</div>`;
+    html+='<div class="result-day"><div class="result-day-label">'+day.label+'</div>';
     day.ids.forEach(id=>{
-      const voters = votesMap[id]||[];
-      const v = voters.length;
-      const cls = 'votes-'+Math.min(v,3);
-      const timeLabel = SLOTS.find(s=>s.id===id)?.label.split('）')[1]||id;
-      const chips = names.map(n=>{
-        const picked = voters.includes(n);
-        const initial = n.charAt(0).toUpperCase();
-        return `<span class="voter-chip${picked?'':' empty'}" title="${n}">${picked?initial:'·'}</span>`;
-      }).join('');
-      html+=`<div class="result-slot ${cls}">
-        <span class="slot-time">${timeLabel}</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="slot-voters">${chips}</div>
-          <span class="votes-count${v===MAX_RESPONDENTS?' full':''}">${v}/${MAX_RESPONDENTS}</span>
-        </div>
-      </div>`;
+      const v=votes[id]||[];
+      const t=SLOTS.find(s=>s.id===id)?.label.split('）')[1]||id;
+      const chips=names.map(n=>'<span class="chip'+(v.includes(n)?'':' empty')+'" title="'+n+'">'+( v.includes(n)?n.charAt(0).toUpperCase():'·')+'</span>').join('');
+      html+='<div class="result-slot v'+Math.min(v.length,5)+'">'
+        +'<span class="slot-time">'+t+'</span>'
+        +'<div style="display:flex;align-items:center;gap:8px">'
+        +'<div class="voter-chips">'+chips+'</div>'
+        +'<span class="vcount'+(v.length===MAX?' full':'')+'">'+v.length+'/'+MAX+'</span>'
+        +'</div></div>';
     });
     html+='</div>';
   });
   body.innerHTML=html;
-
-  const maxVotes = Math.max(...Object.values(votesMap).map(v=>v.length));
-  const bestSlotEl = document.getElementById('bestSlot');
-  if(maxVotes>0){
-    const bestIds = Object.entries(votesMap).filter(([,v])=>v.length===maxVotes).map(([id])=>id);
-    const bestLabels = bestIds.map(id=>getSlotLabel(id).replace('（','<span style="color:#534AB7;font-weight:500">（').replace('）','）</span>'));
-    const icon = maxVotes===MAX_RESPONDENTS ? '✓ 全員可參加' : `${maxVotes}/${MAX_RESPONDENTS} 人可參加`;
-    bestSlotEl.innerHTML=`<p><strong>${icon}：</strong>${bestLabels.join('、')}（台灣時間 UTC+8）</p>`;
-    bestSlotEl.classList.add('show');
+  const maxV=Math.max(...Object.values(votes).map(v=>v.length));
+  const bestEl=document.getElementById('bestSlot');
+  if(maxV>0){
+    const bests=Object.entries(votes).filter(([,v])=>v.length===maxV).map(([id])=>SLOTS.find(s=>s.id===id)?.label||id);
+    bestEl.innerHTML='<strong>'+(maxV===MAX?'✓ 全員可參加':maxV+'/'+MAX+' 人可參加')+'：</strong>'+bests.join('、')+'（台灣時間 UTC+8）';
+    bestEl.classList.add('show');
   } else {
-    bestSlotEl.classList.remove('show');
+    bestEl.classList.remove('show');
   }
 }
 
-loadResponses();
+load();
+setInterval(load, 20000);
 </script>
 </body>
 </html>
